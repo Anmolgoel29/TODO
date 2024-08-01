@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --sidebar-clr: #1c1d22;
+  --board-clr: #2a2b2f;
+  --card-clr: #292b31;
+  --card-container-clr: #24262c;
+  --card-border-clr: #3a3b40;
+  --g: rgb(0, 255, 0);
+  --r: red;
+  /* transition red to green in progress on the scale of 1 to 10 */
+}
+
+.app {
+  background: var(--board-clr);
+}
