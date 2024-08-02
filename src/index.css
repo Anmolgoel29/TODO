@@ -4,6 +4,7 @@
 
 * {
   box-sizing: border-box;
+  overscroll-behavior: none;
 }
 
 :root {
@@ -14,9 +15,71 @@
   --card-border-clr: #3a3b40;
   --g: rgb(0, 255, 0);
   --r: red;
+  --date-bg: rgb(54, 55, 60);
   /* transition red to green in progress on the scale of 1 to 10 */
 }
 
 .app {
   background: var(--board-clr);
+}
+@media screen and (min-width: 1551px) {
+  .body {
+    margin: auto;
+  }
+}
+
+@media screen and (max-width: 1550px) {
+  .body {
+    margin-left: 100px;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .body {
+    min-width: 1280px;
+  }
+  .body-card-container {
+    min-width: 1280px;
+  }
+}
+
+@media screen and (max-width: 1399px) {
+  .body {
+    min-width: 1000px;
+  }
+  .body-card-container {
+    min-width: 1000px;
+  }
+}
+
+@media screen and(max-width:1200px) {
+  .body-card-container {
+    justify-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .body {
+    width: 90vw;
+    justify-content: center;
+  }
+  .body-card-container {
+    /* margin: auto; */
+    justify-content: center;
+    min-width: 90vw;
+  }
+}
+
+@media screen and (max-width: 1140px) {
+  .body-head , .body-x {
+    width: calc(100vw - 130px);
+    /* margin: auto; */
+    /* justify-content: space-around; */
+  }
+
+  .body-card-container {
+    min-width: 0;
+  }
 }

@@ -4,7 +4,7 @@ import "./navbar.css"
 
 function Navbar() {
   return (
-    <div className="nav h-svh w-fit flex flex-col gap-6 p-3" >
+    <div className="nav h-svh w-fit flex flex-col gap-6 p-3 fixed"  style={{minWidth:"78px"}}>
       <img
         src="/public/ovals.png"
         alt="ovals"
