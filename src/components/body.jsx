@@ -79,28 +79,31 @@ function Body_card_container(props) {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
 
-  const add = () => {
+  const add = (close) => {
     let temp = JSON.parse(JSON.stringify(props.main));
     if (props.title == "Done") {
       let obj = {};
       obj.progress = "100%";
       obj.title = title;
       obj.desc = desc;
+      obj.date = Date(Date.now()).slice(3, 16);
       temp.done.push(obj);
     } else if (props.title == "In progress") {
       let obj = {};
       obj.progress = "10%";
       obj.title = title;
       obj.desc = desc;
+      obj.date = Date(Date.now()).slice(3, 16);
       temp.inprogress.push(obj);
     } else if (props.title == "To do") {
       let obj = {};
       obj.progress = "0%";
       obj.title = title;
       obj.desc = desc;
+      obj.date = Date(Date.now()).slice(3, 16);
       temp.todo.push(obj);
     }
-
+    close();
     props.setData(temp);
   };
 
@@ -159,62 +162,65 @@ function Body_card_container(props) {
           }
           position="center center"
         >
-          <div
-            className=" z-10 rounded-2xl shadow-2xl absolute text-white p-14"
-            style={{
-              background: "var(--board-clr)",
-              width: "50vw",
-              height: "50vh",
-              top: "50%",
-              left: "50%",
-              transform: "translateY(-50%) translateX(-50%)",
-            }}
-          >
-            <div className=" flex flex-col items-center h-full gap-14 relative">
-              <div className="add-title flex gap-3 justify-between text-xl items-center w-full">
-                <label htmlFor="title">
-                  <p className="text-2xl">Title: </p>
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  style={{
-                    background: "rgb(37, 38, 43)",
-                    outline: "none",
-                    border: "1px solid white",
+          {(close) => (
+            <div
+              className=" z-10 rounded-2xl shadow-2xl absolute text-white p-14"
+              style={{
+                background: "var(--board-clr)",
+                width: "50vw",
+                height: "50vh",
+                top: "50%",
+                left: "50%",
+                transform: "translateY(-50%) translateX(-50%)",
+              }}
+            >
+              <div className=" flex flex-col items-center h-full gap-14 relative">
+                <div className="add-title flex gap-3 justify-between text-xl items-center w-full">
+                  <label htmlFor="title">
+                    <p className="text-2xl">Title: </p>
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    style={{
+                      background: "rgb(37, 38, 43)",
+                      outline: "none",
+                      border: "1px solid white",
+                    }}
+                    className="rounded-xl px-3 py-2 w-4/6"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
+                </div>
+                <div className="add-desc flex gap-3 justify-between text-xl items-center w-full">
+                  <label htmlFor="desc">
+                    <p className="text-2xl">Description: </p>
+                  </label>
+                  <input
+                    type="text"
+                    id="desc"
+                    style={{
+                      background: "rgb(37, 38, 43)",
+                      outline: "none",
+                      border: "1px solid white",
+                    }}
+                    className="rounded-xl px-3 py-2 w-4/6"
+                    value={desc}
+                    onChange={(e) => setDesc(e.target.value)}
+                  />
+                </div>
+                <button
+                  className="bg-white rounded-full text-xl p-2 w-60 absolute top-3/4"
+                  style={{ color: "var(--card-clr)", fontWeight: "700" }}
+                  onClick={() => {
+                    add(close);
                   }}
-                  className="rounded-xl px-3 py-2 w-4/6"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
+                >
+                  Submit
+                </button>
               </div>
-              <div className="add-desc flex gap-3 justify-between text-xl items-center w-full">
-                <label htmlFor="desc">
-                  <p className="text-2xl">Description: </p>
-                </label>
-                <input
-                  type="text"
-                  id="desc"
-                  style={{
-                    background: "rgb(37, 38, 43)",
-                    outline: "none",
-                    border: "1px solid white",
-                  }}
-                  className="rounded-xl px-3 py-2 w-4/6"
-                  value={desc}
-                  onChange={(e) => setDesc(e.target.value)}
-                />
-              </div>
-
-              <button
-                className="bg-white rounded-full text-xl p-2 w-60 absolute top-3/4"
-                style={{ color: "var(--card-clr)", fontWeight: "700" }}
-                onClick={add}
-              >
-                Submit
-              </button>
             </div>
-          </div>
+          )}
         </Popup>
       </div>
 
@@ -271,7 +277,7 @@ function inc(props) {
 
 function dec(props) {
   let temp = JSON.parse(JSON.stringify(props.main));
-  console.log(temp);
+
   if (props.title == "In progress") {
     if (parseInt(temp.inprogress[props.index].progress.slice(0, -1)) - 10 < 0) {
       return;
@@ -299,6 +305,20 @@ function dec(props) {
 
   console.log(temp);
   console.log(props.setData(temp));
+}
+
+function del(props) {
+  let temp = JSON.parse(JSON.stringify(props.main));  
+  if (props.title == "To do") {
+    temp.todo.splice(props.index, 1);
+  }
+  if (props.title == "In progress") {
+    temp.inprogress.splice(props.index, 1);
+  }
+  if (props.title == "Done") {
+    temp.done.splice(props.index, 1);
+  }
+  props.setData(temp);
 }
 
 // alt approach for increaing and decreasing the progress bar
@@ -340,7 +360,12 @@ function Body_card(props) {
       <div className="body-card-head">
         <div className="flex items-center justify-between pr-1">
           <h1 style={{ fontWeight: "600" }}>{props.data.title}</h1>
-          <MdDelete style={{ transform: "scale(1.25)" }} />
+          <MdDelete
+            style={{ transform: "scale(1.25)" }}
+            onClick={() => {
+              del(props);
+            }}
+          />
         </div>
         <p className="text-sm text-gray-400">{props.data.desc}</p>
       </div>
@@ -351,7 +376,6 @@ function Body_card(props) {
             <img src="/public/progressicon.svg" alt="" width="16px" />
             <p>Progress</p>
           </div>
-          {console.log(props.data)}
           <p>{parseInt(props.data.progress.slice(0, -1)) / 10}/10</p>
         </div>
         <div
