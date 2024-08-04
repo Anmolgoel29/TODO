@@ -6,6 +6,8 @@ import Body from "./components/body";
 function App() {
   function setZoomLevel(level) {
     document.body.zoom(level)
+    // document.documentElement.style.transform = `scale(${level})`;
+    // document.documentElement.style.transformOrigin = "0 0"; // Adjust origin if necessary
   }
 
   return (
