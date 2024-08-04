@@ -41,15 +41,16 @@ This is a simple to-do app built with React, Vite, Tailwind CSS, HTML, and CSS. 
    ```bash
    npm run dev
 
-**Usage**
+##Usage
 Adding a Task: Use the input field and submit button to add a new task.
 Setting Progress: Use the progress bar to update the progress of a task, which automatically updates its classification.
 Removing a Task: Click the delete button next to a task to remove it from the list.
-Contributing
+
+##Contributing
 Feel free to submit issues or pull requests if you have suggestions for improvements or additional features.
 
-**License**
+##License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-**Contact**
+##Contact
 For any questions or feedback, reach out to mrgoel2975@gmail.com.
