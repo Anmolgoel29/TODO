@@ -5,11 +5,11 @@ import Body from "./components/body";
 
 function App() {
   function zoom() {
-    document.body.style.zoom = "80%";
+    document.body.style.zoom = "100%";
   }
 
   return (
-    <div className="app flex 2xl:h-svh pb-10" onload="zoom()">
+    <div className="app flex 2xl:h-svh pb-10" onLoad={zoom}>
       <Navbar />
       <Body />
     </div>
