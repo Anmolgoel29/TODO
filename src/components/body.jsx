@@ -373,7 +373,7 @@ function Body_card(props) {
       <div className="progres-sec flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <img src="/progressicon.svg" alt="" width="16px" />
+            <img src="progressicon.svg" alt="" width="16px" />
             <p>Progress</p>
           </div>
           <p>{parseInt(props.data.progress.slice(0, -1)) / 10}/10</p>
