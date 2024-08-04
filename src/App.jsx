@@ -5,7 +5,7 @@ import Body from "./components/body";
 
 function App() {
   function zoom() {
-    document.body.style.zoom = "100%";
+    document.body.style.zoom = "80%";
   }
 
   return (
