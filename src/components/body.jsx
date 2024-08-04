@@ -4,7 +4,7 @@ import "../index.css";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useState } from "react";
-
+import Popup from "reactjs-popup";
 /*
 {title:"",
 desc:"",
@@ -14,52 +14,12 @@ date:""
  */
 
 function Body() {
-  let temp = JSON.parse(localStorage.getItem("TodoApp"));
-
   const [data, setData] = useState({
-    todo: [
-      // {
-      //   title: "hello world ",
-      //   desc: "new desc",
-      //   progress: "0%",
-      //   date: "29 july 2024",
-      // },
-    ],
-    inprogress: [
-      // {
-      //   title: "hello world temporarily",
-      //   desc: "new desc",
-      //   progress: "30%",
-      //   date: "29 july 2024",
-      // },
-    ],
-    done: [
-      // {
-      //   title: "hello world temporarily",
-
-      //   desc: "new desc",
-      //   progress: "100%",
-      //   date: "29 july 2024",
-      // },
-    ],
+    todo: [],
+    inprogress: [],
+    done: [],
   });
 
-  useEffect(() => {
-    if (temp == null) {
-      localStorage.setItem("TodoApp", JSON.stringify(data));
-    } else {
-      if (temp == "") {
-        localStorage.setItem("TodoApp", JSON.stringify(data));
-        // setData(JSON.parse(temp));
-      } else {
-        console.log("yo")
-        setData(temp);
-      }
-    }
-  },[])
-  
-  localStorage.setItem("TodoApp", JSON.stringify(data));
-  
   return (
     <div
       className="body w-8/12 ml-24 text-white overflow-y-scroll overflow-x-hidden"
@@ -116,7 +76,33 @@ function Body() {
 }
 
 function Body_card_container(props) {
-  function add() {}
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
+
+  const add = () => {
+    let temp = JSON.parse(JSON.stringify(props.main));
+    if (props.title == "Done") {
+      let obj = {};
+      obj.progress = "100%";
+      obj.title = title;
+      obj.desc = desc;
+      temp.done.push(obj);
+    } else if (props.title == "In progress") {
+      let obj = {};
+      obj.progress = "10%";
+      obj.title = title;
+      obj.desc = desc;
+      temp.inprogress.push(obj);
+    } else if (props.title == "To do") {
+      let obj = {};
+      obj.progress = "0%";
+      obj.title = title;
+      obj.desc = desc;
+      temp.todo.push(obj);
+    }
+
+    props.setData(temp);
+  };
 
   return (
     <div
@@ -133,37 +119,103 @@ function Body_card_container(props) {
           {props.title}
         </p>
 
-        <div className="flex gap-1 items-center cursor-pointer" onClick={add}>
-          <div className="p-2 rounded-full hover:bg-gray-600">
-            <svg
-              className="text-white"
-              width="12"
-              height="12"
-              viewBox="0 0 10 10"
-              fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g opacity="0.4">
-                <path
-                  d="M9 5L1 5"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M5 9L5 1"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </g>
-            </svg>
-          </div>
+        <Popup
+          modal
+          trigger={
+            <div className="flex gap-1 items-center cursor-pointer">
+              <div className="p-2 rounded-full hover:bg-gray-600">
+                <svg
+                  className="text-white"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 10 10"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g opacity="0.4">
+                    <path
+                      d="M9 5L1 5"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M5 9L5 1"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </g>
+                </svg>
+              </div>
 
-          <h3 className="text-base text-white" style={{ fontWeight: "700" }}>
-            Add new task
-          </h3>
-        </div>
+              <h3
+                className="text-base text-white"
+                style={{ fontWeight: "700" }}
+              >
+                Add new task
+              </h3>
+            </div>
+          }
+          position="center center"
+        >
+          <div
+            className=" z-10 rounded-2xl shadow-2xl absolute text-white p-14"
+            style={{
+              background: "var(--board-clr)",
+              width: "50vw",
+              height: "50vh",
+              top: "50%",
+              left: "50%",
+              transform: "translateY(-50%) translateX(-50%)",
+            }}
+          >
+            <div className=" flex flex-col items-center h-full gap-14 relative">
+              <div className="add-title flex gap-3 justify-between text-xl items-center w-full">
+                <label htmlFor="title">
+                  <p className="text-2xl">Title: </p>
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  style={{
+                    background: "rgb(37, 38, 43)",
+                    outline: "none",
+                    border: "1px solid white",
+                  }}
+                  className="rounded-xl px-3 py-2 w-4/6"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
+              <div className="add-desc flex gap-3 justify-between text-xl items-center w-full">
+                <label htmlFor="desc">
+                  <p className="text-2xl">Description: </p>
+                </label>
+                <input
+                  type="text"
+                  id="desc"
+                  style={{
+                    background: "rgb(37, 38, 43)",
+                    outline: "none",
+                    border: "1px solid white",
+                  }}
+                  className="rounded-xl px-3 py-2 w-4/6"
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                />
+              </div>
+
+              <button
+                className="bg-white rounded-full text-xl p-2 w-60 absolute top-3/4"
+                style={{ color: "var(--card-clr)", fontWeight: "700" }}
+                onClick={add}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </Popup>
       </div>
 
       <div
@@ -299,6 +351,7 @@ function Body_card(props) {
             <img src="/public/progressicon.svg" alt="" width="16px" />
             <p>Progress</p>
           </div>
+          {console.log(props.data)}
           <p>{parseInt(props.data.progress.slice(0, -1)) / 10}/10</p>
         </div>
         <div
