@@ -22,7 +22,7 @@ function Body() {
 
   return (
     <div
-      className="body w-8/12 ml-24 text-white overflow-y-scroll overflow-x-hidden"
+      className="body w-8/12 ml-24 text-white overflow-x-hidden"
       style={{}}
     >
       <div className="body-head flex justify-between h-20 mb-4 items-center">
